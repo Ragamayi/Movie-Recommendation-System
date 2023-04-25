@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Movie Recommendations</title>
+    <style>    body {
+      background-image: url("https://img.freepik.com/free-photo/movie-elements-blue-background-with-copy-space_23-2148457883.jpg?w=900&t=st=1682345447~exp=1682346047~hmac=adc4be4e03b783a8381e582648330d31215a90f597c8aa0c0d500f12b8afc8fd");
+      background-repeat: no-repeat;
+      background-size: cover;
+     
+      padding: 0%;
+      margin: 0%;
+      font-family: sans-serif;
+    }
+    .wrapper {
+      height: 100%;
+      overflow: auto;
+      text-align: center;
+    }
+         
+    .button {
+      display: inline-block;
+      margin: 8px auto; /* center the buttons */
+      padding: 10px 20px;
+      background-color: #202426; /* dark gray */
+      color: #FFFFFF; /* white */
+      font-size: 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      text-align: center; /* align button text to center */
+      width: 10%; /* adjust width to desired size */
+      border: none;
+      box-shadow: 0px 5px 10px rgba(0,0,0,0.3);
+    }
+    
+    .button:hover {
+      background-color: #f7fafc; /* lighter gray */
+      box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
+    }
+    
+    h2 {
+      font-size: 36px;
+      color: #212121; /* dark gray */
+      text-align: center;
+    }
+    
+    p {
+      font-size: 24px;
+      color: #131212; /* medium gray */
+      text-align: center;
+    }
+    
+    a {
+      color: #131414; /* dark gray */
+      text-decoration: none;
+    }
+    
+    a:hover {
+      color: #546E7A; /* lighter gray */
+    }
+    
+    </style>
+      
+  </head>
+  <body>
+    <div class="wrapper">
+      
+      {% if error %}
+        <p>Sorry, the movie "{{ movie_name }}" was not found.</p><br>
+        <p class="link"><a href="https://www.imdb.com/search/title/?count=100&groups=top_1000&sort=user_rating" target="_blank" >Click here to explore our collection of movies and find something that interests you.</a></p>
+        <p class="link"><a href="/" class="button">Back to Home</a></p>
+      {% else %}
+        <h2>Here are some movies you might like:</h2><br>
+       {{ recommendations | safe }}<br>
+        <p>Click on the movie name to explore more</p><br>
+        <p class="link"><a href="/" class="button">Back to Home</a></p><br>
+      {% endif %}
+    </div>
+  </body>
+</html>
