@@ -15,14 +15,23 @@ tfidf = TfidfVectorizer(stop_words="english")
 tfidf.fit(data1["Description"].values.astype("U"))
 
 # Transform the movie descriptions into TF-IDF vectors
-tfidf_matrix = tfidf.transform(data1["Description"].values.astype("U"))
+tfidf_desc_matrix = tfidf.transform(data1["Description"].values.astype("U"))
+
+# Create a TfidfVectorizer object for the movie genres
+tfidf_genres = TfidfVectorizer(stop_words="english")
+genres_str = data1["Genre"].fillna('').apply(lambda x: ' '.join(x.split('|')))
+tfidf_genres_matrix = tfidf_genres.fit_transform(genres_str)
+
+# Concatenate the two TF-IDF matrices
+tfidf_matrix = pd.concat([pd.DataFrame(tfidf_desc_matrix.todense()), pd.DataFrame(tfidf_genres_matrix.todense())], axis=1)
+
 
 
 # Compute the cosine similarity matrix
 cosine_sim_matrix = cosine_similarity(tfidf_matrix, tfidf_matrix)
 
 # Get the indices and movie titles
-indices = pd.Series(data1.index, index=data1["Movie name"]).drop_duplicates()
+indices = pd.Series(data1.index, index=data1["Movie name"]).drop_duplicates().to_dict()
 
 
 @app.route('/')
@@ -37,7 +46,7 @@ def movie_recommendations():
 
     
     # Check if the movie is in the indices dictionary
-    if title not in indices:
+    if title not in indices.keys():
         return render_template('recommend.html', error=True, movie_name=title)
 
     # Get the index of the movie that matches the title
@@ -49,13 +58,13 @@ def movie_recommendations():
     # Sort the movies by similarity score
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     
-    # Get the top 10 most similar movies
+    # Get the top most similar movies
     sim_scores = sim_scores[1:num_rec+1]
     
-    # Get the indices of the top 10 movies
+    # Get the indices of the top movies
     movie_indices = np.array([i[0] for i in sim_scores])
     
-    # Get the names of the top 10 movies
+    # Get the names of the top movies
     recommendations = data1["Movie name"].iloc[movie_indices].tolist()
 
    
