@@ -14,7 +14,7 @@
         font-family: 'Roboto', sans-serif;
         background-image: url("https://img.freepik.com/free-photo/arrangement-movie-elements-blue-background-with-copy-space_23-2148457886.jpg?size=626&ext=jpg&ga=GA1.2.317458965.1682344585&semt=robertav1_2_sidr");
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 100% 150%;
         min-height: 100%;
         min-width: 100%;
         color: #242424;
@@ -49,7 +49,7 @@
       }
     
       input[type="text"]{
-        width: 80%;
+        width: 70%;
         size: 1cm;
         padding: 0.5 rem;
         margin-bottom: 1rem;
@@ -57,7 +57,7 @@
         border: 2px solid #4D4D4D;
         text-align: center;
       }
-      input[type="number"]{width: 30%;
+      input[type="number"]{width: 20%;
         padding: 0.5 rem;
         margin-bottom: 1rem;
         font-size: 1rem;
@@ -72,6 +72,7 @@
         background-color: #242424;
         color: #FAF8F0;
         border: none;
+        
         cursor: pointer;
         transition: all 0.2s ease-in-out;
       }
@@ -99,7 +100,7 @@
     
         input[type="text"],
         input[type="number"] {
-          width: 80%;
+          width: 50%;
           margin-bottom: 0.5rem;
           text-align: center;
         }
@@ -113,34 +114,43 @@
   </head>
   <body>
     
-    <h3>Welcome to our movie recommendation system! We'll help you find the perfect movie to watch tonight.</h3>
-      <p>Simply enter the name of a movie and we'll provide you with some great recommendations.</p>
-      <p>Let's get started!</p>
+    <h3>Explore a World of Amazing Movies with Our Customized Recommendation System!</h3>
+      <p>Let our recommendation system be your movie guide!</p>
+      <p>Your movie journey starts here!</p>
     <form action="/recommendation" method="POST">
       <label style="text-align: center">Movie Name:
-        <input list="movies" name="movie_name" placeholder="Enter movie name" size="30" style="height:20px" required= "required" />
+        <input list="movies" name="movie_name" placeholder="Enter movie name" size="17" style="height:22px" required= "required" />
       </label>
       <datalist id="movies"></datalist>
       <script>
         // Define an array of movie names
-        var movieNames = ["The Shawshank Redemption","The Godfather","The Dark Knight","Schindler's List","The Lord of the Rings: The Return of the King","12 Angry Men","The Godfather Part II","Underground","Inception","The Lord of the Rings: The Fellowship of the Rin","Fight Club","Forrest Gump","Il buono, il brutto, il cattivo","The Lord of the Rings: The Two Towers","Jai Bhim","777 Charlie","Rocketry: The Nambi Effect","The Matrix","GoodFellas","One Flew Over the Cuckoo's Nest", "Match Point","Die Hard with a Vengeance","The Last King of Scotland","Seven Pounds","The Bridges of Madison County","50/50","21 Grams", "I Am Sam","25th Hour","Sabrina","From Here to Eternity","Un long dimanche de fiançailles","The Taking of Pelham One Two Three","Control","Philomena","United 93","Shine","Les yeux sans visage", "The Invisible Man","The Empire Strikes Back","Soorarai Pottru","Interstellar","Star Wars","Se7en","The Silence of the Lambs","The Green Mile","Sen to Chihiro no kamikakushi","Terminator 2: Judgment Day","Saving Private Ryan","Cidade de Deus","La vita è bella","Shichinin no samurai","It's a Wonderful Life","Seppuku","Sita Ramam","Gladiator","Whiplash","Gisaengchung","The Departed","Mulan","Serbuan maut","The Fly","Lethal Weapon","The Butterfly Effect","What We Do in the Shadows","Rushmore","La piel que habito","True Grit","Dark City","The Mitchells vs the Machines","Mad Max 2","End of Watch","Enter the Dragon","Dark Waters","The Jungle Book","The Naked Gun: From the Files of Police Squad!","Rebel Without a Cause","Gake no ue no Ponyo","Snow White and the Seven Dwarfs","Back to the Future","Casablanca","The Prestige","Psycho","Alien","Apocalypse Now","Léon","The Pianist","The Lion King","The Usual Suspects","Zootopia","La passion de Jeanne d'Arc","To Be or Not to Be","Swades: We, the People","Rangasthalam","Gangs of Wasseypur"];
-      
-        // Get a reference to the datalist element
-        var datalist = document.getElementById("movies");
-      
-        // Loop through the movie names and create an option for each one
-        for (var i = 0; i < movieNames.length; i++) {
-          var option = document.createElement("option");
-          option.value = movieNames[i];
-          datalist.appendChild(option);
-        }
-      </script>
+        var movieNames = [];
+
+        // Fetch the movie names from the CSV file using Python
+        fetch('/get_movie_names')
+            .then(response => response.json())
+            .then(data => {
+                // Add the movie names to the array
+                movieNames = data;
+
+                // Get a reference to the datalist element
+                var datalist = document.getElementById("movies");
+
+                // Loop through the movie names and create an option for each one
+                for (var i = 1; i < movieNames.length; i++) {
+                    var option = document.createElement("option");
+                    option.value = movieNames[i];
+                    datalist.appendChild(option);
+                }
+            });
+
+    </script>
       
       <label for="num_rec">Number of recommendations:</label>
-      <input type="number" id="num_rec" name="num_rec" min="1" max = "30" size="30" placeholder="Enter upto 30" required="required"><br><br>
+      <input type="number" id="num_rec" name="num_rec" min="1" max = "100" size="4"style="height:22px" placeholder="Enter number" required="required"><br><br>
       <input type="submit" value="Submit">
     </form>
   </body>
 </html>
 
-  
+
